@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shorts Hook Generator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome per Icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+        .custom-shadow {
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -7px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-slate-900 antialiased flex flex-col justify-between min-h-screen">
+
+    <!-- Toast Notification per la Copia -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 ease-out bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 pointer-events-none">
+        <span class="w-7 h-7 rounded-full bg-brand-500 text-slate-900 flex items-center justify-center font-bold text-xs">
+            <i class="fa-solid fa-check"></i>
+        </span>
+        <span id="toast-message" class="font-medium text-sm">Copiato negli appunti!</span>
+    </div>
+
+    <!-- Header / Navbar -->
+    <header class="w-full bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-500 text-slate-950 p-2.5 rounded-xl font-bold flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <i class="fa-solid fa-bolt text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl tracking-tight text-slate-900">Shorts Hook<span class="text-brand-600">.gen</span></h1>
+                    <p class="text-xs text-slate-500 font-medium">Ganci Virali & Bio per YouTube Shorts</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleGuide()" class="text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1.5 border border-brand-200">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Guida Utente</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full">
+
+        <!-- GUIDA UTENTE (BOX INFORMATIVO COLLAPSIBILE) -->
+        <div id="user-guide-box" class="bg-gradient-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-6 mb-8 custom-shadow relative overflow-hidden transition-all duration-300">
+            <div class="absolute right-0 top-0 translate-x-4 -translate-y-4 w-32 h-32 bg-brand-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex items-start justify-between border-b border-slate-700/80 pb-4 mb-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-lg text-white">Guida Rapida all'Uso</h2>
+                        <p class="text-xs text-slate-400">Come utilizzare Shorts Hook.gen per pubblicare in pochi secondi</p>
+                    </div>
+                </div>
+                <button onclick="toggleGuide()" class="text-slate-400 hover:text-white p-1 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs leading-relaxed">
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <div class="text-brand-400 font-bold flex items-center gap-1.5 text-sm">
+                        <span>1.</span> Genera il Contenuto
+                    </div>
+                    <p class="text-slate-300">Scegli tra <b>Ganci</b>, <b>Bio</b> o <b>Hashtag</b>. Inserisci il tema del tuo video e clicca sul pulsante di generazione.</p>
+                </div>
+                
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <div class="text-brand-400 font-bold flex items-center gap-1.5 text-sm">
+                        <span>2.</span> Copia negli Appunti
+                    </div>
+                    <p class="text-slate-300">Clicca sul pulsante <b>"Copia"</b> o <b>"Copia Tutti"</b>. Il testo viene salvato all'istante nella memoria del tuo dispositivo senza dover scaricare nulla.</p>
+                </div>
+
+                <div class="bg-slate-800/60 p-4 rounded-2xl border border-slate-700/50 space-y-1.5">
+                    <div class="text-brand-400 font-bold flex items-center gap-1.5 text-sm">
+                        <span>3.</span> Incolla nei tuoi Video
+                    </div>
+                    <p class="text-slate-300">Apri la pagina del tuo video o canale e fai <b>Incolla</b> (Ctrl+V da PC o premi "Incolla" su smartphone) nei titoli o descrizioni.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Navigation (Bio / Hooks / Hashtags) -->
+        <div class="flex bg-slate-200/70 p-1.5 rounded-2xl max-w-xl mx-auto mb-8 border border-slate-300/50">
+            <button id="tab-hooks-btn" onclick="switchTab('hooks')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm transition-all duration-200 shadow-sm bg-white text-slate-900">
+                <i class="fa-solid fa-fire text-brand-600 mr-1.5"></i>5 Ganci Virali
+            </button>
+            <button id="tab-bio-btn" onclick="switchTab('bio')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition-all duration-200">
+                <i class="fa-solid fa-id-card text-brand-600 mr-1.5"></i>Bio YouTube
+            </button>
+            <button id="tab-hashtags-btn" onclick="switchTab('hashtags')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl font-semibold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition-all duration-200">
+                <i class="fa-solid fa-hashtag text-brand-600 mr-1.5"></i>Hashtag Virali
+            </button>
+        </div>
+
+        <!-- SEZIONE 1: HOOKS GENERATOR -->
+        <div id="section-hooks" class="space-y-6">
+            <!-- Form Card -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-100">
+                <div class="max-w-2xl mx-auto text-center space-y-2 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Crea Ganci che fermano lo Scroll</h2>
+                    <p class="text-slate-500 text-sm">Inserisci l'argomento del tuo Short e genera all'istante 5 ganci studiati per catturare l'attenzione nei primi 3 secondi.</p>
+                </div>
+
+                <form onsubmit="handleGenerateHooks(event)" class="max-w-2xl mx-auto space-y-4">
+                    <div class="relative">
+                        <input type="text" id="hook-topic" required placeholder="Es. Come risparmiare soldi, Palestra a casa, Ricette veloci..." 
+                               class="w-full px-5 py-4 pl-12 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all text-slate-900 placeholder-slate-400 font-medium">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button type="submit" class="flex-1 bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 transition-all duration-200 flex items-center justify-center space-x-2 text-base active:scale-[0.99]">
+                            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                            <span>Genera 5 Ganci Virali</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Section -->
+            <div id="hooks-result" class="hidden space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                    <div>
+                        <h3 class="font-bold text-slate-900 flex items-center gap-2">
+                            <span>Ganci per:</span> 
+                            <span id="current-hook-topic" class="text-brand-600 underline decoration-brand-400 underline-offset-4"></span>
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Fai clic su "Copia" per utilizzare subito il gancio nel tuo video!</p>
+                    </div>
+                    <div class="flex items-center space-x-2 w-full sm:w-auto">
+                        <button onclick="handleGenerateHooks(event)" class="flex-1 sm:flex-none px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <span>Rigenera</span>
+                        </button>
+                        <button onclick="copyAllHooks()" class="flex-1 sm:flex-none px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Copia Tutti</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="hooks-list" class="grid grid-cols-1 gap-4"></div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 2: BIO GENERATOR -->
+        <div id="section-bio" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-100">
+                <div class="max-w-2xl mx-auto text-center space-y-2 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Bio per il tuo Canale YouTube</h2>
+                    <p class="text-slate-500 text-sm">Crea una presentazione professionale e accattivante per convertire i visitatori casuali in iscritti.</p>
+                </div>
+
+                <form onsubmit="handleGenerateBio(event)" class="max-w-2xl mx-auto space-y-4">
+                    <div class="space-y-3">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Nicchia / Tema del Canale</label>
+                        <input type="text" id="bio-topic" required placeholder="Es. Growth Hacking, Fitness Femminile, Gaming, Tech Reviews..." 
+                               class="w-full px-5 py-4 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all text-slate-900 placeholder-slate-400 font-medium">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Target Pubblico</label>
+                            <input type="text" id="bio-target" placeholder="Es. Principianti, Studenti, Professionisti..." 
+                                   class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-brand-500 outline-none text-sm font-medium text-slate-800">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Tono di Voce</label>
+                            <select id="bio-tone" class="w-full px-4 py-3 rounded-2xl border-2 border-slate-200 focus:border-brand-500 outline-none text-sm font-medium text-slate-800 bg-white">
+                                <option value="energico">🔥 Energico & Motivazionale</option>
+                                <option value="professionale">💼 Professionale & Autorevole</option>
+                                <option value="amichevole">😊 Amichevole & Informale</option>
+                                <option value="ironico">⚡ Diretto & Provocatorio</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 transition-all duration-200 flex items-center justify-center space-x-2 text-base active:scale-[0.99] mt-2">
+                        <i class="fa-solid fa-id-card text-lg"></i>
+                        <span>Genera Bio Pronta all'Uso</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Bio Result -->
+            <div id="bio-result" class="hidden bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i>
+                        <span>La Tua Nuova Bio YouTube</span>
+                    </h3>
+                    <button onclick="copyBioText()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Copia Bio</span>
+                    </button>
+                </div>
+                
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
+                    <p id="bio-output-text" class="whitespace-pre-line text-slate-800 font-medium leading-relaxed text-sm sm:text-base"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE 3: HASHTAGS GENERATOR -->
+        <div id="section-hashtags" class="hidden space-y-6">
+            <!-- Form Card -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-100">
+                <div class="max-w-2xl mx-auto text-center space-y-2 mb-6">
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Generatore di Hashtag Virali</h2>
+                    <p class="text-slate-500 text-sm">Trova i migliori hashtag per attirare pubblico su YouTube Shorts.</p>
+                </div>
+
+                <form onsubmit="handleGenerateHashtags(event)" class="max-w-2xl mx-auto space-y-4">
+                    <div class="space-y-3">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Argomento del Video / Nicchia</label>
+                        <div class="relative">
+                            <input type="text" id="hashtag-topic" required placeholder="Es. Fitness, Produttività, Finanza Personale, Cucina..." 
+                                   class="w-full px-5 py-4 pl-12 rounded-2xl border-2 border-slate-200 focus:border-brand-500 focus:ring-4 focus:ring-brand-500/10 outline-none transition-all text-slate-900 placeholder-slate-400 font-medium">
+                            <i class="fa-solid fa-hashtag absolute left-4.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Tipologia di Hashtag</label>
+                        <select id="hashtag-type" class="w-full px-4 py-3.5 rounded-2xl border-2 border-slate-200 focus:border-brand-500 outline-none text-sm font-medium text-slate-800 bg-white">
+                            <option value="mix">🔥 Mix Bilanciato (Nicchia + Viral)</option>
+                            <option value="niche">🎯 Focus Nicchia Specifico</option>
+                            <option value="viral">⚡ Trend & Alta Popolarità</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-slate-950 font-bold py-4 px-6 rounded-2xl shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 transition-all duration-200 flex items-center justify-center space-x-2 text-base active:scale-[0.99] mt-2">
+                        <i class="fa-solid fa-bolt text-lg"></i>
+                        <span>Genera Hashtag Virali</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Hashtag Result -->
+            <div id="hashtags-result" class="hidden bg-white rounded-3xl p-6 sm:p-8 custom-shadow border border-slate-100 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-hashtag text-brand-500"></i>
+                        <span>Hashtag Suggeriti</span>
+                    </h3>
+                    <button onclick="copyHashtagsText()" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-copy"></i>
+                        <span>Copia Tutti</span>
+                    </button>
+                </div>
+                
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
+                    <p id="hashtag-output-text" class="text-slate-800 font-semibold leading-relaxed text-sm sm:text-base break-words"></p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-xs text-slate-400 border-t border-slate-200/50">
+        Digital Creator Lab &bull; Shorts Hook Generator
+    </footer>
+
+    <!-- LOGICA JAVASCRIPT COMPLETA -->
+    <script>
+        let currentGeneratedHooks = [];
+
+        function toggleGuide() {
+            const box = document.getElementById('user-guide-box');
+            box.classList.toggle('hidden');
+        }
+
+        function switchTab(tab) {
+            ['hooks', 'bio', 'hashtags'].forEach(t => {
+                const sec = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`tab-${t}-btn`);
+                if (t === tab) {
+                    sec.classList.remove('hidden');
+                    btn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    sec.classList.add('hidden');
+                    btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.add('-translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 2500);
+        }
+
+        function copyToClipboard(text, customMessage = "Copiato negli appunti!") {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(customMessage);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast(customMessage);
+            });
+        }
+
+        function handleGenerateHooks(e) {
+            if (e) e.preventDefault();
+            const topic = document.getElementById('hook-topic').value.trim();
+            if (!topic) return;
+
+            document.getElementById('current-hook-topic').innerText = topic;
+
+            currentGeneratedHooks = [
+                `Scommetto che non sapevi questo segreto su ${topic}...`,
+                `Smetti subito di fare questo errore madornale con ${topic}!`,
+                `Ecco cosa nessuno ti dice davvero riguardo a ${topic}.`,
+                `Se vuoi dominare ${topic}, devi assolutamente fare questo:`,
+                `3 dettagli su ${topic} che cambieranno tutto il tuo approccio:`
+            ];
+
+            const list = document.getElementById('hooks-list');
+            list.innerHTML = '';
+
+            currentGeneratedHooks.forEach((hook, idx) => {
+                const card = document.createElement('div');
+                card.className = "p-4 bg-white rounded-2xl border border-slate-200/80 flex items-center justify-between gap-3 hover:border-brand-500/50 transition-all";
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="w-6 h-6 rounded-full bg-brand-50 text-brand-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
+                        <p class="text-sm font-medium text-slate-800">${hook}</p>
+                    </div>
+                    <button onclick="copyToClipboard('${hook.replace(/'/g, "\\'")}')" class="px-3 py-1.5 bg-slate-100 hover:bg-brand-500 hover:text-white text-slate-700 rounded-xl text-xs font-semibold shrink-0 transition-all">
+                        Copia
+                    </button>
+                `;
+                list.appendChild(card);
+            });
+
+            document.getElementById('hooks-result').classList.remove('hidden');
+        }
+
+        function copyAllHooks() {
+            if (!currentGeneratedHooks.length) return;
+            copyToClipboard(currentGeneratedHooks.join('\n\n'), "Tutti i 5 ganci copiati!");
+        }
+
+        function handleGenerateBio(e) {
+            e.preventDefault();
+            const topic = document.getElementById('bio-topic').value.trim();
+            const target = document.getElementById('bio-target').value.trim() || "creator";
+            const tone = document.getElementById('bio-tone').value;
+
+            let bioText = "";
+            if (tone === "energico") {
+                bioText = `🚀 Benvenuto su Digital Creator Lab!\nIl punto di riferimento per chi vuole padroneggiare ${topic}.\n🎯 Creato per ${target}.\n\n🔔 Iscriviti per non perdere nessun consiglio utile e portare i tuoi contenuti al livello successivo!`;
+            } else if (tone === "professionale") {
+                bioText = `Strategie pratiche, analisi e tutorial dedicati a ${topic}.\nApprofondimenti realizzati su misura per ${target}.\n\nIscriviti per non perdere i prossimi appuntamenti.`;
+            } else if (tone === "ironico") {
+                bioText = `Pensi ancora che ${topic} sia difficile?\nSmettila di complicarti la vita: qui trovi dritte rapide per ${target}.\n\nIscriviti subito prima di perderti la prossima chicca! ⚡`;
+            } else {
+                bioText = `Benvenuto! Qui esploriamo ${topic} in modo chiaro, divertente e alla portata di tutti.\nUno spazio dedicato a ${target}.\n\nUnisciti alla nostra community iscrivendoti al canale! ✨`;
+            }
+
+            document.getElementById('bio-output-text').innerText = bioText;
+            document.getElementById('bio-result').classList.remove('hidden');
+        }
+
+        function copyBioText() {
+            const text = document.getElementById('bio-output-text').innerText;
+            if (text) copyToClipboard(text, "Bio copiata negli appunti!");
+        }
+
+        function handleGenerateHashtags(e) {
+            e.preventDefault();
+            const rawTopic = document.getElementById('hashtag-topic').value.trim();
+            const cleanTopic = rawTopic.replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '');
+            const type = document.getElementById('hashtag-type').value;
+
+            let tags = [];
+            if (type === 'niche') {
+                tags = [`#${cleanTopic}`, `#${cleanTopic}Italia`, `#Consigli${cleanTopic}`, `#Guida${cleanTopic}`, `#Tutorial${cleanTopic}`];
+            } else if (type === 'viral') {
+                tags = [`#Shorts`, `#Trending`, `#ViralShorts`, `#PerTe`, `#${cleanTopic}`];
+            } else {
+                tags = [`#Shorts`, `#${cleanTopic}`, `#YouTubeShorts`, `#Consigli`, `#DigitalCreator`, `#Viral`];
+            }
+
+            document.getElementById('hashtag-output-text').innerText = tags.join(' ');
+            document.getElementById('hashtags-result').classList.remove('hidden');
+        }
+
+        function copyHashtagsText() {
+            const text = document.getElementById('hashtag-output-text').innerText;
+            if (text) copyToClipboard(text, "Hashtag copiati!");
+        }
+    </script>
+</body>
+</html>
